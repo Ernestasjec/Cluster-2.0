@@ -1,0 +1,15 @@
+{
+  "version": "0.2.1",
+  "tasks": [
+    {
+      "taskName": "task-distances",
+      "appliesTo": "Data/distances.csv",
+      "type": "launch"
+    },
+    {
+      "taskName": "task-Cluster",
+      "appliesTo": "Cluster/Cluster.csproj",
+      "type": "msbuild"
+    }
+  ]
+}
