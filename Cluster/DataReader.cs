@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
-using System.Collections.Generic;
 
 namespace Cluster
 {
@@ -15,9 +14,25 @@ namespace Cluster
             HashSet<Flow> set = new HashSet<Flow>();
             using (StreamReader reader = new StreamReader("flows.csv"))
             {
-                //column names in first line
+                //column names in first line in excel
                 reader.ReadLine();
                 while(!reader.EndOfStream)
+                {
+                    string line = reader.ReadLine();
+                    Flow f = new Flow(line);
+                    set.Add(f);
+                }
+            }
+            return set;
+        }
+        public List<Flow> ReadFlowList(bool x)
+        {
+            List<Flow> set = new List<Flow>();
+            using (StreamReader reader = new StreamReader("flows.csv"))
+            {
+                //column names in first line in excel
+                reader.ReadLine();
+                while (!reader.EndOfStream)
                 {
                     string line = reader.ReadLine();
                     Flow f = new Flow(line);
@@ -31,7 +46,23 @@ namespace Cluster
             HashSet<Distance> set = new HashSet<Distance>();
             using (StreamReader reader = new StreamReader("distances.csv"))
             {
-                //column names in first line
+                //column names in first line in excel
+                reader.ReadLine();
+                while (!reader.EndOfStream)
+                {
+                    string line = reader.ReadLine();
+                    Distance d = new Distance(line);
+                    set.Add(d);
+                }
+            }
+            return set;
+        }
+        public List<Distance> ReadDistList()
+        {
+            List<Distance> set = new List<Distance>();
+            using (StreamReader reader = new StreamReader("distances.csv"))
+            {
+                //column names in first line in excel
                 reader.ReadLine();
                 while (!reader.EndOfStream)
                 {

@@ -8,11 +8,11 @@ namespace Cluster
 {
     class Distance
     {
-        string Key { get; }
-        string Origin { get; }
-        string Destination { get; }
-        double Dist { get; }
-        double Time { get; }
+        public string Key { get; }
+        public string Origin { get; }
+        public string Destination { get; }
+        public double Dist { get; }
+        public double Time { get; }
         
         public Distance(string origin, string dest, double dist, double time)
         {
@@ -39,7 +39,7 @@ namespace Cluster
             Dist = Double.Parse(vals[3]);
             Time = Double.Parse(vals[4]);
         }
-        public string ToString()
+        public override string ToString()
         {
             return string.Format("{0} {1} {2} {3} {4}", Key, Origin, Destination, Dist, Time);
         }

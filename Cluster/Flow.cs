@@ -8,11 +8,11 @@ namespace Cluster
 {
     class Flow
     {
-        string Load { get; }
-        string Unload { get; }
-        string Type { get; }
-        double FlowTons { get; }
-        double FlowTonKMs { get; }
+        public string Load { get; }
+        public string Unload { get; }
+        public string Type { get; }
+        public double FlowTons { get; }
+        public double FlowTonKMs { get; }
 
         public Flow(string load, string unload, string type, double flowTons, double flowTonKMs)
         {
@@ -31,9 +31,13 @@ namespace Cluster
             FlowTons = Double.Parse(vals[3]);
             FlowTonKMs = Double.Parse(vals[4]);
         }
-        public string ToString()
+        public override string ToString()
         {
             return string.Format("{0} {1} {2} {3} {4}", Load, Unload, Type, FlowTons, FlowTonKMs);
+        }
+        public string getType()
+        {
+            return Type;
         }
     }
 }

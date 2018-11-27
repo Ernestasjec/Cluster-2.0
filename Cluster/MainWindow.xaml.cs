@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Text;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -35,11 +35,27 @@ namespace Cluster
             DataReader dr = new DataReader();
             HashSet<Distance> distances = dr.ReadDist();
             HashSet<Flow> flows = dr.ReadFlow();
-            foreach (var item in distances)
-	        {
-                Console.WriteLine(item.ToString());
-	        }
 
+            var railFlow = flows.Where(x => x.Type.CompareTo("Rail") == 0).ToList();
+            var roadFlow = flows.Where(x => x.Type.CompareTo("Road") == 0).ToList();
+            Console.WriteLine("{0} {1}", railFlow.Count, roadFlow.Count);
+
+            double railCost = 0, roadCost = 0;
+            foreach (var i in railFlow)
+            {
+                //delivery cost
+                railCost += i.FlowTonKMs * RD;
+                //CO2 cost
+                railCost += i.FlowTonKMs * RE;
+            }
+            foreach (var i in roadFlow)
+            {
+                //delivery cost
+                roadCost += i.FlowTonKMs * TD;
+                //CO2 cost
+                roadCost += i.FlowTonKMs * TE;
+            }
+            Console.WriteLine("{0} \n{1}", railCost, roadCost);
         }
     }
 }
