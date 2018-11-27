@@ -39,5 +39,9 @@ namespace Cluster
             Dist = Double.Parse(vals[3]);
             Time = Double.Parse(vals[4]);
         }
+        public string ToString()
+        {
+            return string.Format("{0} {1} {2} {3} {4}", Key, Origin, Destination, Dist, Time);
+        }
     }
 }

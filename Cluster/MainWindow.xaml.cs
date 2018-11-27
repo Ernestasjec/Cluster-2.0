@@ -35,8 +35,10 @@ namespace Cluster
             DataReader dr = new DataReader();
             HashSet<Distance> distances = dr.ReadDist();
             HashSet<Flow> flows = dr.ReadFlow();
-            Console.WriteLine(flows.Count);
-            Console.WriteLine(distances.Count);
+            foreach (var item in distances)
+	        {
+                Console.WriteLine(item.ToString());
+	        }
 
         }
     }

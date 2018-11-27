@@ -31,5 +31,9 @@ namespace Cluster
             FlowTons = Double.Parse(vals[3]);
             FlowTonKMs = Double.Parse(vals[4]);
         }
+        public string ToString()
+        {
+            return string.Format("{0} {1} {2} {3} {4}", Load, Unload, Type, FlowTons, FlowTonKMs);
+        }
     }
 }

@@ -1,6 +1,13 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Cluster",
+    "\\Cluster\\bin",
+    "\\Cluster\\bin\\Debug",
+    "\\Cluster\\obj",
+    "\\Cluster\\Properties",
+    "\\Data"
   ],
+  "SelectedNode": "\\Cluster\\MainWindow.xaml.cs",
   "PreviewInSolutionExplorer": false
 }
