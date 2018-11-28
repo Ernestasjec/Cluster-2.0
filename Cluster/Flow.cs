@@ -13,7 +13,7 @@ namespace Cluster
         public string Type { get; }
         public double FlowTons { get; }
         public double FlowTonKMs { get; }
-
+        public bool ContainsWarehouse{get; set;}
         public Flow(string load, string unload, string type, double flowTons, double flowTonKMs)
         {
             Load = Load;
@@ -21,6 +21,7 @@ namespace Cluster
             Type = type;
             FlowTons = flowTons;
             FlowTonKMs = flowTonKMs;
+            ContainsWarehouse = false;
         }
         public Flow(string line)
         {
@@ -30,10 +31,11 @@ namespace Cluster
             Type = vals[2];
             FlowTons = Double.Parse(vals[3]);
             FlowTonKMs = Double.Parse(vals[4]);
+            ContainsWarehouse = false;
         }
         public override string ToString()
         {
-            return string.Format("{0} {1} {2} {3} {4}", Load, Unload, Type, FlowTons, FlowTonKMs);
+            return string.Format("{0} {1} {2} {3} {4} {5}", Load, Unload, Type, FlowTons, FlowTonKMs, ContainsWarehouse);
         }
         public string getType()
         {
