@@ -30,6 +30,7 @@ namespace Cluster
             Dist = dist;
             Time = time;
         }
+
         public Distance(string line)
         {
             string[] vals = line.Split(',');
