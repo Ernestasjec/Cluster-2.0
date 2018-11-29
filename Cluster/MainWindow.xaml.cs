@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.IO;
 
 namespace Cluster
 {
@@ -28,7 +29,6 @@ namespace Cluster
         const double RD = 3.95;        // railway delivery cost                  eur/ton/km
         const double TE = 0.062;       // truck emission CO2/km                  eur/km
         const double RE = 0.022;       // railway emission CO2/km                eur/km
-
         public MainWindow()
         {
             InitializeComponent();
@@ -36,8 +36,8 @@ namespace Cluster
             HashSet<Distance> distances = dr.ReadDist();
             HashSet<Flow> flows = dr.ReadFlow();
 
-            var railFlow = flows.Where(x => x.Type.CompareTo("Rail") == 0).ToList();
-            var roadFlow = flows.Where(x => x.Type.CompareTo("Road") == 0).ToList();
+            var railFlow = new HashSet<Flow>(flows.Where(x => x.Type.CompareTo("Rail") == 0).ToList());
+            var roadFlow = new HashSet<Flow>(flows.Where(x => x.Type.CompareTo("Road") == 0).ToList());
             Console.WriteLine("{0} {1}", railFlow.Count, roadFlow.Count);
 
             double railCost = 0, roadCost = 0;
@@ -56,6 +56,84 @@ namespace Cluster
                 roadCost += i.FlowTonKMs * TE;
             }
             Console.WriteLine("{0} \n{1}", railCost, roadCost);
+
+            //Grafo testas
+
+            Graph<string> graph = new Graph<string>();
+            graph = CreateGraph(distances, roadFlow, railFlow);
+            using (StreamWriter writer = new StreamWriter("Test.txt"))
+            {
+                foreach (GraphNode<string> node in graph.Nodes)
+                {
+                    int i = 0;
+                    writer.WriteLine(node.Value + " kaimynai:");
+                    foreach (GraphNode<string> neib in node.Neighbors)
+                    {
+                        writer.WriteLine(neib.Value + " RoadFlow cost -" + neib.RoadCosts[i] + "RailFlow cost -" + neib.RailCosts[i]);
+                    }
+                }
+            }
+        }
+
+        Graph<string> CreateGraph(HashSet<Distance> distances, HashSet<Flow> roadFlows, HashSet<Flow> railFlows)
+        {
+            Graph<string> graph = new Graph<string>();
+
+            foreach (var item in distances)
+            {
+                if (!graph.Contains(item.Origin))
+                {
+                    GraphNode<string> region = new GraphNode<string>(item.Origin);
+                    graph.AddNode(region);
+                }
+            }
+
+            foreach (var item in distances)
+            {
+                if (item.Origin != item.Destination)
+                {
+                    GraphNode<string> orig = graph.FindByValue(item.Origin);
+                    GraphNode<string> dest = graph.FindByValue(item.Destination);
+                    graph.AddEdge(orig, dest, TranspCostCalc(item.Dist, roadFlows, railFlows, orig, dest, true), TranspCostCalc(item.Dist, roadFlows, railFlows, orig, dest, false));
+                    //graph.AddEdge(orig, dest, item.Dist, item.Dist);
+                }
+            }
+            return graph;
+        }
+        //Reikia dar optimizuoti
+        //kai IsRoadFlow = true skaiciuoja gabenimo sunkvezimiu kastus, false kai traukiniu
+        double TranspCostCalc(double distance, HashSet<Flow> roadFlow, HashSet<Flow> railFlow, GraphNode<string> from, GraphNode<string> to, bool IsRoadFlow)
+        {
+            double transportationCost = 0;
+            double totalCost = 0;
+            if (IsRoadFlow)
+            {
+                foreach (var item in roadFlow)
+                {
+                    if (item.Load == from.Value && item.Unload == to.Value)
+                    {
+                        transportationCost = item.FlowTonKMs * TD;
+                        break;
+                    }
+                }
+
+                totalCost = distance * TE + transportationCost;
+                return totalCost;
+            }
+            else
+            {
+                foreach (var item in railFlow)
+                {
+                    if (item.Load == from.Value && item.Unload == to.Value)
+                    {
+                        transportationCost = item.FlowTonKMs * RD;
+                        break;
+                    }
+                }
+
+                totalCost = distance * RE + transportationCost;
+                return totalCost;
+            }
         }
     }
 }
