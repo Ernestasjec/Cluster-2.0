@@ -12,7 +12,7 @@ namespace Cluster
         public HashSet<Flow> ReadFlow()
         {
             HashSet<Flow> set = new HashSet<Flow>();
-            using (StreamReader reader = new StreamReader("flows.csv"))
+            using (StreamReader reader = new StreamReader("flows.csv", Encoding.GetEncoding(437)))
             {
                 //column names in first line in excel
                 reader.ReadLine();
@@ -28,7 +28,7 @@ namespace Cluster
         public List<Flow> ReadFlowList(bool x)
         {
             List<Flow> set = new List<Flow>();
-            using (StreamReader reader = new StreamReader("flows.csv"))
+            using (StreamReader reader = new StreamReader("flows.csv", Encoding.GetEncoding(437)))
             {
                 //column names in first line in excel
                 reader.ReadLine();
@@ -44,7 +44,7 @@ namespace Cluster
         public HashSet<Distance> ReadDist()
         {
             HashSet<Distance> set = new HashSet<Distance>();
-            using (StreamReader reader = new StreamReader("distances.csv"))
+            using (StreamReader reader = new StreamReader("distances.csv", Encoding.GetEncoding(437)))
             {
                 //column names in first line in excel
                 reader.ReadLine();
@@ -60,7 +60,7 @@ namespace Cluster
         public List<Distance> ReadDistList()
         {
             List<Distance> set = new List<Distance>();
-            using (StreamReader reader = new StreamReader("distances.csv"))
+            using (StreamReader reader = new StreamReader("distances.csv", Encoding.GetEncoding(437)))
             {
                 //column names in first line in excel
                 reader.ReadLine();

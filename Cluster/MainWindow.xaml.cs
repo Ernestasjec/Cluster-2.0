@@ -29,6 +29,7 @@ namespace Cluster
         const double RD = 3.95;        // railway delivery cost                  eur/ton/km
         const double TE = 0.062;       // truck emission CO2/km                  eur/km
         const double RE = 0.022;       // railway emission CO2/km                eur/km
+
         public MainWindow()
         {
             InitializeComponent();
@@ -44,9 +45,11 @@ namespace Cluster
             foreach (var i in railFlow)
             {
                 //delivery cost
-                railCost += i.FlowTonKMs * RD;
+                //railCost += i.FlowTonKMs * RD;
+                railCost += i.FlowTonKMs * TD;
                 //CO2 cost
-                railCost += i.FlowTonKMs * RE;
+                //railCost += i.FlowTonKMs * RE;
+                railCost += i.FlowTonKMs * TE;
             }
             foreach (var i in roadFlow)
             {
@@ -134,6 +137,49 @@ namespace Cluster
                 totalCost = distance * RE + transportationCost;
                 return totalCost;
             }
+
+            Part2(flows, distances);
+        }
+        void Part2(HashSet<Flow> flows, HashSet<Distance> distances )
+        {
+            double railCost = 0, roadCost = 0;
+            using (StreamWriter writer = new StreamWriter("WH_out.txt"))
+            {
+                foreach (var item in flows)
+	            {
+                    if(WH.Contains(item.Load) && WH.Contains(item.Unload))
+                    {
+                        item.ContainsWarehouse = true;
+                        writer.WriteLine(item);
+                    }
+	            }
+            }
+            
+            /*var flowz = flows.Select(x => x.Load.CompareTo(WH.Any ( y => x.Load == y  || x.Unload == y))).ToList();
+            foreach (Flow i in flowz)
+	        {
+                i.ContainsWarehouse = true; 
+                Console.WriteLine(i);
+	        }*/
+            /*foreach (var i in railFlow)
+            {
+                //delivery cost
+                //railCost += i.FlowTonKMs * RD;
+                railCost += i.FlowTonKMs * TD;
+                //CO2 cost
+                //railCost += i.FlowTonKMs * RE;
+                railCost += i.FlowTonKMs * TE;
+            }
+            foreach (var i in roadFlow)
+            {
+                if(i.Load)
+                //delivery cost
+                roadCost += i.FlowTonKMs * TD;
+                //CO2 cost
+                roadCost += i.FlowTonKMs * TE;
+            }*/
+            Console.WriteLine("{0} \n{1}", railCost, roadCost);
+
         }
     }
 }
